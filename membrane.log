@@ -1,0 +1,129 @@
+output frequency: 1
+structural node: 11 0 0 0 phi 0 0 0
+structural node: 1001 0.5 -0.07253 0 phi 0 0 0
+structural node: 1006 0.5 0 0 phi 0 0 0
+beam2: 1001 1001 0 0 0 1006 0 0 0
+clamp: 1 11 0 0 0 1 0 0 0 1 0 0 0 1 11 0 0 0 1 0 0 0 1 0 0 0 1
+axialrotation: 101 11 0 0 0 1 0 0 0 1 0 0 0 1 1006 -0.5 0 0 1 0 0 0 1 0 0 0 1
+structural follower force: 10 1001 0 0 0
+structural follower force: 11 1006 0 0 0
+struct node dofs: 0 6 18
+struct node eqs: 0 12 24
+struct node momentum dofs: 12 24
+struct node momentum eqs: 6 18
+struct displacement node dofs: 0 6 18
+struct displacement node eqs: 0 12 24
+struct displacement node momentum dofs: 12 24
+struct displacement node momentum eqs: 6 18
+struct node labels: 11 1001 1006
+struct displacement node labels: 11 1001 1006
+Symbol table:
+  integer Beam_RodElem_curr = 0
+  real EA = 1e+07.
+  real EJy = 1e+07.
+  real EJz = 1000.
+  const bool FALSE = 0
+  real Force_1 = 1000.
+  real Force_1_m = 1e+103.
+  real Force_1_t = 1e-100.
+  real GAy = 6e+06.
+  real GAz = 6e+06.
+  real GJ = 200.
+  const integer INT_MAX = 2147483647
+  const integer INT_MIN = -2147483648
+  integer Index = 6
+  integer JoAxRot_Ground_RodElem_anchor_Right = 101
+  integer JoClamp_Ground = 1
+  real L_Rod = 0.14506
+  real L_RodElem = 0.014506
+  integer N_Right = 5
+  real N_real_Right = 5.
+  integer NoDyn_RodElem_1st_Right = 1001
+  integer NoDyn_RodElem_curr = 1006
+  integer NoSta_Ground = 11
+  real Omega_1 = 100.
+  real Omega_1_m = 1e+102.
+  real Omega_1_t = 1e-100.
+  const integer RAND_MAX = 2147483647
+  const real REAL_MAX = 1.79769e+308
+  const real REAL_MIN = 2.22507e-308
+  real R_Rotor = 0.5
+  integer Ref_Ground = 1
+  integer Ref_RodElem_1st_Right = 101
+  integer Ref_RodElem_Anchor_Right = 112
+  integer Step = 0
+  const bool TRUE = 1
+  real T_1 = 0.0628319
+  real Time = 0.
+  real TimeStep = 0.
+  real Var = 0.
+  const real deg2rad = 0.0174533
+  const real e = 2.71828
+  const real ft2m = 0.3048
+  const real in2m = 0.0254
+  const real in2mm = 25.4
+  const real kg2lb = 2.20462
+  const real kg2slug = 0.0685218
+  const real lb2kg = 0.453592
+  const real m2ft = 3.28084
+  const real m2in = 39.3701
+  const real mm2in = 0.0393701
+  real phi_Rotor = 1.5708
+  const real pi = 3.14159
+  const real rad2deg = 57.2958
+  const real slug2kg = 14.5939
+  real viscos_factor = 0.05
+Environment:
+  SHELL=/bin/bash
+  SESSION_MANAGER=local/scw-a5ymyf:@/tmp/.ICE-unix/1407,unix/scw-a5ymyf:/tmp/.ICE-unix/1407
+  QT_ACCESSIBILITY=1
+  COLORTERM=truecolor
+  XDG_MENU_PREFIX=gnome-
+  GNOME_DESKTOP_SESSION_ID=this-is-deprecated
+  SWIG_PATH=/usr/local/lib/swigtool/bin
+  SSH_AUTH_SOCK=/run/user/1001/keyring/ssh
+  XMODIFIERS=@im=ibus
+  SSH_AGENT_PID=1310
+  GTK_MODULES=gail:atk-bridge
+  DBUS_STARTER_BUS_TYPE=session
+  PWD=/home/julian/software/mbdyn-adapter/210818/MBDynSocketRecv_10
+  LOGNAME=julian
+  XDG_SESSION_TYPE=x11
+  GPG_AGENT_INFO=/run/user/1001/gnupg/S.gpg-agent:0:1
+  PULSE_SCRIPT=/etc/xrdp/pulse/default.pa
+  HOME=/home/julian
+  IM_CONFIG_PHASE=1
+  LANG=C.UTF-8
+  LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+  XDG_CURRENT_DESKTOP=GNOME
+  VTE_VERSION=6003
+  XRDP_SOCKET_PATH=/run/xrdp/sockdir
+  XRDP_PULSE_SOURCE_SOCKET=xrdp_chansrv_audio_in_socket_10
+  GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/3df10874_7ae3_4ef2_bc47_ff51c26e061b
+  INVOCATION_ID=187d50cc70644d3889a23e49bab4bffc
+  MANAGERPID=1124
+  LESSCLOSE=/bin/lesspipe %s %s
+  XDG_SESSION_CLASS=user
+  PYTHONPATH=:/usr/local/mbdyn/libexec/mbpy
+  TERM=xterm-256color
+  LESSOPEN=| /bin/lesspipe %s
+  USER=julian
+  GNOME_TERMINAL_SERVICE=:1.226
+  XRDP_SESSION=1
+  DISPLAY=:10.0
+  XRDP_PULSE_SINK_SOCKET=xrdp_chansrv_audio_out_socket_10
+  SHLVL=1
+  QT_IM_MODULE=ibus
+  DBUS_STARTER_ADDRESS=unix:path=/run/user/1001/bus,guid=d4b57d1a11d355e0343b3ff7611cd806
+  XDG_RUNTIME_DIR=/run/user/1001
+  JOURNAL_STREAM=9:29305
+  XDG_DATA_DIRS=/usr/share/gnome:/usr/local/share/:/usr/share/
+  PATH=/usr/local/lib/swigtool/bin:/usr/local/lib/swigtool/bin:/sbin:/bin:/usr/bin:/usr/local/bin:/home/julian/.local/bin
+  DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1001/bus,guid=d4b57d1a11d355e0343b3ff7611cd806
+  UID=1001
+  BASH_FUNC_of2012%%=() {  source /usr/lib/openfoam/openfoam2012/etc/bashrc;
+ openfoam_helper
+}
+  BASH_FUNC_openfoam_helper%%=() {  :
+}
+  _=/usr/local/bin/mbdyn

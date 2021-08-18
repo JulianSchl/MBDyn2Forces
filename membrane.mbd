@@ -1,0 +1,186 @@
+# beam_rotation.mbd
+
+#-----------------------------------------------------------------------------
+# [Data Block]
+
+begin: data;
+   problem: initial value;
+end: data;
+
+#-----------------------------------------------------------------------------
+# [Problem Block]
+
+begin: initial value;
+   initial time:   0.;
+   final time:     0.05;
+   time step:      1.e-4;
+   max iterations: 1.e2;
+   tolerance:      1.e-4;
+   derivatives tolerance:      1.e-2;
+   derivatives coefficient: 0.5;
+   derivatives max iterations: 100;
+   #output: iterations;
+   #output: residual;
+end: initial value;
+
+#-----------------------------------------------------------------------------
+# Design Variables
+set: integer N_Right = 5; # Number of beams for the rod
+set: real N_real_Right = 5; # Number of beams for the rod
+set: real L_Rod    = 0.14506;  	#[m]     Length of the rod
+set: real R_Rotor = 0.5;		#[m]     Radius of Rotor
+set: real phi_Rotor = pi/2.;	#[rad]   Offset in Rotor
+set: real L_RodElem = L_Rod/N_Right/2.;
+
+set: real EA  = 1.e7;  #[N]    Beam stiffness of the rod
+set: real GAy = 0.6e7; #[N]    Beam stiffness of the rod
+set: real GAz = 0.6e7; #[N]    Beam stiffness of the rod
+set: real GJ  = 2.e2;  #[Nm^2] Beam stiffness of the rod
+set: real EJy = 1.e7;  #[Nm^2] Beam stiffness of the rod
+set: real EJz = 1.e3;  #[Nm^2] Beam stiffness of the rod
+
+set: real viscos_factor = 0.05; # Proportional viscosity factor of the rod
+
+#Force
+set: real Force_1 = 1.e3;		#y Zielwert
+set: real Force_1_t = 1.e-100;
+set: real Force_1_m = Force_1/Force_1_t;		#m Steigung bei y = m*t
+
+#Rotation
+set: real Omega_1 = 1.e2;		#y Zielwert
+set: real Omega_1_t = 1.e-100;
+set: real Omega_1_m = Omega_1/Omega_1_t;		#m Steigung bei y = m*t
+set: real T_1 = 2.*pi/Omega_1;
+
+#-----------------------------------------------------------------------------
+# [Control Data Block]
+
+begin: control data;
+   structural nodes: 3;
+   joints:			 2;
+   beams:            1;
+   forces:			 1+1;
+   default orientation: orientation vector;
+end: control data;
+
+#-----------------------------------------------------------------------------
+# Reference Labels
+set: integer Ref_Ground = 1;
+
+set: integer Ref_RodElem_1st_Right = 101;
+set: integer Ref_RodElem_Anchor_Right = (Ref_RodElem_1st_Right-1)+2*N_Right+2;
+
+# Node Labels
+set: integer NoSta_Ground      = 11;
+set: integer NoDyn_RodElem_curr;
+
+set: integer NoDyn_RodElem_1st_Right = 1001;
+
+# Joint Labels
+set: integer JoClamp_Ground     = 1; # Clamp
+set: integer JoAxRot_Ground_RodElem_anchor_Right 	= 101; #Axial Rotation
+
+# Beam Labels
+set: integer Beam_RodElem_curr;
+
+# Index
+set: integer Index;
+
+#-----------------------------------------------------------------------------
+
+# Reference
+
+reference: Ref_Ground,
+   null,                        # absolute position
+   eye, 						# absolute orientation
+   null,                        # absolute velocity
+   null;                        # absolute angular velocity
+
+reference: Ref_RodElem_Anchor_Right,
+   reference, Ref_Ground, R_Rotor, -L_Rod/2., 0.,                  # absolute position
+   reference, Ref_Ground, euler, 0., 0., phi_Rotor,					 # absolute orientation
+   reference, Ref_Ground, null,                  # absolute velocity
+   reference, Ref_Ground, null;                  # absolute angular velocity
+   
+#-----------------------------------------------------------------------------
+# [Nodes Block]
+
+begin: nodes;
+
+   #-----------------------------------------------------------------------------
+   # Structural Nodes
+   structural: NoSta_Ground, static,
+      reference, Ref_Ground, null, # absolute position
+      reference, Ref_Ground, eye,  # absolute orientation
+      reference, Ref_Ground, null, # absolute velocity
+      reference, Ref_Ground, null; # absolute angular velocity
+
+   set: Index = 1;
+   set: NoDyn_RodElem_curr = (NoDyn_RodElem_1st_Right-1)+Index;
+
+	structural: NoDyn_RodElem_curr, dynamic,
+	   reference, Ref_RodElem_Anchor_Right, (Index-1)*L_RodElem, 0., 0., # absolute position
+	   reference, Ref_RodElem_Anchor_Right, euler, 0., 0., -phi_Rotor,   # absolute orientation
+	   reference, Ref_RodElem_Anchor_Right, null,                        # absolute velocity
+	   reference, Ref_RodElem_Anchor_Right, null;                        # absolute angular velocity
+   
+   set: Index = 6;
+   set: NoDyn_RodElem_curr = (NoDyn_RodElem_1st_Right-1)+Index;
+
+	structural: NoDyn_RodElem_curr, dynamic,
+	   reference, Ref_RodElem_Anchor_Right, (Index-1)*L_RodElem, 0., 0., # absolute position
+	   reference, Ref_RodElem_Anchor_Right, euler, 0., 0., -phi_Rotor,   # absolute orientation
+	   reference, Ref_RodElem_Anchor_Right, null,                        # absolute velocity
+	   reference, Ref_RodElem_Anchor_Right, null;                        # absolute angular velocity
+      
+end: nodes;
+
+#-----------------------------------------------------------------------------
+# [Elements Block]
+
+begin: elements;
+   
+   #-----------------------------------------------------------------------------
+   
+   # Beams
+   
+   beam2: NoDyn_RodElem_1st_Right,
+	   NoDyn_RodElem_1st_Right,
+		  null,            # relative offset
+	   (NoDyn_RodElem_1st_Right-1)+6,
+		  null,            # relative offset
+	   eye,                                 # orientation matrix section I
+	   linear viscoelastic generic,         # constitutive law section I
+		  diag, EA, GAy, GAz, GJ, EJy, EJz,    # stiffness
+		  proportional, viscos_factor;         # proportional viscosity factor
+
+   #-----------------------------------------------------------------------------
+   # Joints
+   joint: JoClamp_Ground,
+      clamp,
+         NoSta_Ground,
+            reference, Ref_Ground, null, # absolute position
+            reference, Ref_Ground, eye;  # absolute
+            
+   joint: JoAxRot_Ground_RodElem_anchor_Right, 
+      axial rotation, 
+         NoSta_Ground,
+            reference, Ref_Ground, null,                     # relative offset
+            hinge, reference, Ref_Ground, eye, # relative orientation
+         (NoDyn_RodElem_1st_Right-1)+6,
+            reference, Ref_Ground, null,                                # relative offset
+            hinge, reference, Ref_Ground, eye, # relative axis orientation
+         sample and hold,
+         ramp, Omega_1_m, 0., Omega_1_t, 0.,
+         ramp, Omega_1_m, 0., Omega_1_t, 0.;    # angular velocity
+
+         
+#-----------------------------------------------------------------------------
+   
+   force: 10, follower, NoDyn_RodElem_1st_Right, position, null, 0., 1., 0., sample and hold, ramp, Force_1_m, 0., Force_1_t, 0., ramp, Force_1_m, 0., Force_1_t, 0.;
+   force: 11, follower, (NoDyn_RodElem_1st_Right-1)+6, position, null, 0., 1., 0., sample and hold, ramp, Force_1_m, 0., Force_1_t, 0., ramp, Force_1_m, 0., Force_1_t, 0.;
+   
+   #force: 10, external structural, socket, create, yes, path, "case0.sock", no signal, sleep time, 0.05, coupling, tight, orientation, orientation vector, accelerations, no, 1,NoDyn_RodElem_1st_Right;
+   #force: 11, external structural, socket, create, yes, path, "case1.sock", no signal, sleep time, 0.05, coupling, tight, orientation, orientation vector, accelerations, no, 1,(NoDyn_RodElem_1st_Right-1)+6;
+                       
+end: elements;
